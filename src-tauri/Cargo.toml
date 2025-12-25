@@ -1,29 +1,28 @@
 [package]
-name = "zos"
+name = "zos-shell"
 version = "4.2.0"
-description = "zOS Desktop Application"
+description = "Minimal native shell for web-based zOS"
 authors = ["Hanzo AI"]
 edition = "2021"
 license = "MIT"
-repository = "https://github.com/z-os4/tauri"
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
 
 [dependencies]
-tauri = { version = "2", features = ["tray-icon", "macos-private-api"] }
+# Core Tauri
+tauri = { version = "2", features = [] }
+
+# Native API plugins - optional features for zOS
 tauri-plugin-shell = "2"
 tauri-plugin-fs = "2"
-tauri-plugin-dialog = "2"
-tauri-plugin-notification = "2"
 tauri-plugin-clipboard-manager = "2"
-tauri-plugin-global-shortcut = "2"
-tauri-plugin-updater = "2"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
+tauri-plugin-notification = "2"
+tauri-plugin-dialog = "2"
 
 [profile.release]
 strip = true
 lto = true
 codegen-units = 1
 panic = "abort"
+opt-level = "z"

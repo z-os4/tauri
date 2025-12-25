@@ -1,46 +1,72 @@
-# zOS Desktop App v4.2.0
+# zOS Desktop Shell v4.2.0
 
-Download and run zOS as a native desktop application built with [Tauri](https://tauri.app).
+Minimal native wrapper for [zOS](https://github.com/z-os4) - a web-based operating system.
+
+## Architecture
+
+```
+┌─────────────────────────────────────┐
+│           Tauri Shell (~2MB)        │  ← Native window container
+├─────────────────────────────────────┤
+│                                     │
+│     zOS (100% Browser/Web)          │  ← All logic runs here
+│                                     │
+│  ┌─────────┐ ┌─────────┐ ┌───────┐  │
+│  │@z-os/ui │ │@z-os/   │ │@z-os/ │  │
+│  │         │ │  apps   │ │desktop│  │
+│  └─────────┘ └─────────┘ └───────┘  │
+│                                     │
+└─────────────────────────────────────┘
+```
+
+**zOS runs 100% in the browser.** Tauri is just a thin shell providing:
+- Native window frame
+- Desktop icon/launcher
+- Native API bridge (file system, notifications, clipboard, etc.)
+- System tray integration
+- Auto-updates
 
 ## Download
 
-Download the latest release for your platform:
-- **macOS**: [zOS.app.dmg](https://github.com/z-os4/tauri/releases/latest)
+- **macOS**: [zOS.dmg](https://github.com/z-os4/tauri/releases/latest)
 - **Windows**: [zOS.msi](https://github.com/z-os4/tauri/releases/latest)
 - **Linux**: [zOS.AppImage](https://github.com/z-os4/tauri/releases/latest)
 
-## Build from Source
+## Run in Browser (No Download)
 
-### Prerequisites
-- Node.js 18+
-- Rust 1.70+
-- [Tauri prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites)
-
-### Install & Run
-```bash
-npm install
-npm run tauri:dev
+zOS works fully in any modern browser:
+```
+https://zos.hanzo.ai
 ```
 
-### Build Release
+## Build from Source
+
 ```bash
+# Prerequisites: Node.js 18+, Rust 1.70+
+
+npm install
 npm run tauri:build
 ```
 
-Built binaries will be in `src-tauri/target/release/bundle/`.
+Binary size: ~2-5MB (vs Electron's 150MB+)
 
-## Features
-- Native performance with Tauri/Rust backend
-- Small bundle size (~5MB vs Electron's 150MB+)
-- Full zOS desktop environment
-- Native system tray integration
-- Native file system access
-- Auto-updates support
+## Development
 
-## Stack
-- **Frontend**: React + TypeScript + Vite
-- **Backend**: Rust + Tauri 2.0
-- **UI**: @z-os/desktop, @z-os/ui, @z-os/apps, @z-os/sdk
+```bash
+npm run tauri:dev   # With native shell
+npm run dev         # Browser only (recommended)
+```
+
+## Web-First Philosophy
+
+All zOS packages are pure web/browser code:
+- `@z-os/sdk` - App SDK (React hooks)
+- `@z-os/ui` - Window, Dock components
+- `@z-os/apps` - Calculator, Terminal, etc.
+- `@z-os/desktop` - Desktop environment
+
+No native dependencies. Works in any browser. Tauri is optional.
 
 ## License
+
 MIT
